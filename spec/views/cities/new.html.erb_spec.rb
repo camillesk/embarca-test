@@ -1,24 +1,25 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
-RSpec.describe "cities/new", type: :view do
+RSpec.describe 'cities/new', type: :view do
   before(:each) do
     assign(:city, City.new(
-      name: "MyString",
-      population: 1,
-      state: nil
-    ))
+                    name: 'MyString',
+                    population: 1,
+                    state: nil
+                  ))
   end
 
-  it "renders new city form" do
+  it 'renders new city form' do
     render
 
-    assert_select "form[action=?][method=?]", cities_path, "post" do
+    assert_select 'form[action=?][method=?]', cities_path, 'post' do
+      assert_select 'input[name=?]', 'city[name]'
 
-      assert_select "input[name=?]", "city[name]"
+      assert_select 'input[name=?]', 'city[population]'
 
-      assert_select "input[name=?]", "city[population]"
-
-      assert_select "input[name=?]", "city[state_id]"
+      assert_select 'input[name=?]', 'city[state_id]'
     end
   end
 end
