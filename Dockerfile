@@ -7,4 +7,5 @@ WORKDIR /embarca-test
 COPY Gemfile /embarca-test/Gemfile
 COPY Gemfile.lock /embarca-test/Gemfile.lock
 RUN bundle install
+ENV RUBYOPT='-W:no-deprecated'
 CMD ["rails", "server"]
