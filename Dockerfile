@@ -1,5 +1,7 @@
-FROM ruby:2.7.0
-RUN apt-get update -qq && apt-get install -y build-essential libpq-dev nodejs
+FROM ruby:2.7.0-alpine
+RUN apk --update add -qq && apk add --no-cache nodejs curl tzdata libffi-dev \
+    cmake gcc alpine-sdk linux-headers git zlib-dev openssl-dev gperf \
+    libgcc libstdc++ libx11 glib libxrender libxext libintl postgresql-dev
 RUN mkdir /embarca-test
 WORKDIR /embarca-test
 COPY Gemfile /embarca-test/Gemfile
