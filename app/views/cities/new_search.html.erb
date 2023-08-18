@@ -1,0 +1,19 @@
+<div class="card w-25 mx-auto mt-5">
+  <div class="card-header">
+    <h1>Search Cities</h1>
+  </div>
+  <div class="card-body">
+    <%= form_for :search_cities, url: search_cities_path do |form| %>
+      <%= form.label :name %>
+      <%= form.text_field :name, class: "form-control" %>
+
+      <%= form.label :state_name, class: "mt-2" %>
+      <%= form.text_field :state_name, class: "form-control" %>
+
+      <div class="d-flex justify-content-around mt-4">
+        <%= link_to 'Back', cities_path, class: "btn btn-secondary mt-2" %>
+        <%= form.submit "Search", class: "btn btn-primary mt-2" %>
+      </div>
+    <% end %>
+  </div>
+</div>

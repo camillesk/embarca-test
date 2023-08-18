@@ -1,0 +1,21 @@
+version: '3'
+services:
+  db:
+    image: postgres
+    volumes:
+      - ./tmp/db:/var/lib/postgresql/data
+    environment: 
+      -  POSTGRES_PASSWORD=56zxH&10
+    ports:
+      - "5432:5432"
+  embarca-test:
+    container_name: embarca-test
+    build: .
+    command: sh -c "while [ true ]; do sleep 10; done"
+    # command: sh -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 3000 -b '0.0.0.0'"
+    volumes:
+      - .:/embarca-test
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db

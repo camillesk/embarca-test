@@ -1,0 +1,11 @@
+<div class="card w-25 mx-auto mt-5">
+  <div class="card-header">
+    <h1>Editing City</h1>
+  </div>
+  <div class="card-body">
+    <%= render 'form', city: @city %>
+  </div>
+  <div class="card-footer d-flex justify-content-start">
+    <%= link_to 'Back', cities_path, class: "btn btn-secondary" %>
+  </div>
+</div>
