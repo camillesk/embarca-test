@@ -13,20 +13,20 @@
 
   <div class="field">
     <%= form.label :name %>
-    <%= form.text_field :name %>
+    <%= form.text_field :name, class: "form-control" %>
   </div>
 
   <div class="field">
     <%= form.label :population %>
-    <%= form.number_field :population %>
+    <%= form.number_field :population, class: "form-control" %>
   </div>
 
   <div class="field">
     <%= form.label :state_id %>
-    <%= form.text_field :state_id %>
+    <%= form.collection_select :state_id, State.all, :id, :name, {:include_blank => true}, {class: "form-control"} %>
   </div>
 
-  <div class="actions">
-    <%= form.submit %>
+  <div class="actions d-flex justify-content-end mt-3">
+    <%= form.submit 'Save', class: "btn btn-success" %>
   </div>
 <% end %>

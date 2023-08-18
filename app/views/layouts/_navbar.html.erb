@@ -5,11 +5,10 @@
   </button>
   <div class="collapse navbar-collapse" id="navbarNav">
     <ul class="navbar-nav">
-      <li class="nav-item <%= is_nav_item_active?('cities') %>">
+      <li class="nav-item <%= nav_item_active?('cities') %>">
         <%= link_to "Cities", cities_path, class: "nav-link" %>
-        <%# <a class="nav-link" href="#">States <span class="sr-only">(current)</span></a> %>
       </li>
-      <li class="nav-item <%= is_nav_item_active?('states') %>">
+      <li class="nav-item <%= nav_item_active?('states') %>">
         <%= link_to "States", states_path, class: "nav-link" %>
       </li>
     </ul>
