@@ -40,6 +40,7 @@ gem 'bootsnap', '>= 1.1.0', require: false
 
 gem 'bootstrap', '~> 4.0.0'
 gem 'jquery-rails'
+gem 'pg_search'
 gem 'rubocop-rails', require: false
 
 group :development, :test do

@@ -5,10 +5,13 @@
   </button>
   <div class="collapse navbar-collapse" id="navbarNav">
     <ul class="navbar-nav">
-      <li class="nav-item <%= nav_item_active?('cities') %>">
+      <li class="nav-item <%= nav_item_active?('cities', 'index') %>">
         <%= link_to "Cities", cities_path, class: "nav-link" %>
       </li>
-      <li class="nav-item <%= nav_item_active?('states') %>">
+      <li class="nav-item <%= nav_item_active?('cities', 'new_search') %>">
+        <%= link_to "Search Cities", search_cities_path, class: "nav-link" %>
+      </li>
+      <li class="nav-item <%= nav_item_active?('states', 'index') %>">
         <%= link_to "States", states_path, class: "nav-link" %>
       </li>
     </ul>

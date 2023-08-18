@@ -12,6 +12,20 @@ class CitiesController < ApplicationController
   # GET /cities/1 or /cities/1.json
   def show; end
 
+  def new_search; end
+
+  def search
+    cities_by_name = search_params[:name].blank? ? City.all : City.search_by_name(search_params[:name])
+    cities_by_state_name =
+      if search_params[:state_name].blank?
+        City.all
+      else
+        City.search_by_state_name(search_params[:state_name])
+      end
+
+    @cities = cities_by_name & cities_by_state_name
+  end
+
   # GET /cities/new
   def new
     @city = City.new
@@ -68,5 +82,9 @@ class CitiesController < ApplicationController
   # Only allow a list of trusted parameters through.
   def city_params
     params.require(:city).permit(:name, :population, :state_id)
+  end
+
+  def search_params
+    params.require(:search_cities).permit(:state_name, :name)
   end
 end
