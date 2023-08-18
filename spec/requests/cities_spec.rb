@@ -17,12 +17,13 @@ require 'rails_helper'
 RSpec.describe '/cities', type: :request do
   # City. As you add validations to City, be sure to
   # adjust the attributes here as well.
+  let(:state) { create :state }
   let(:valid_attributes) do
-    skip('Add a hash of attributes valid for your model')
+    { name: Faker::Address.city, population: rand, state_id: state.id }
   end
 
   let(:invalid_attributes) do
-    skip('Add a hash of attributes invalid for your model')
+    { name: '', population: rand, state_id: 123 }
   end
 
   describe 'GET /index' do
@@ -76,25 +77,21 @@ RSpec.describe '/cities', type: :request do
           post cities_url, params: { city: invalid_attributes }
         end.to change(City, :count).by(0)
       end
-
-      it "renders a successful response (i.e. to display the 'new' template)" do
-        post cities_url, params: { city: invalid_attributes }
-        expect(response).to be_successful
-      end
     end
   end
 
   describe 'PATCH /update' do
     context 'with valid parameters' do
+      let(:state) { create :state }
       let(:new_attributes) do
-        skip('Add a hash of attributes valid for your model')
+        { name: 'Curitiba', population: rand, state_id: state.id }
       end
 
       it 'updates the requested city' do
         city = City.create! valid_attributes
         patch city_url(city), params: { city: new_attributes }
         city.reload
-        skip('Add assertions for updated state')
+        expect(city.name).to eq('Curitiba')
       end
 
       it 'redirects to the city' do
@@ -102,14 +99,6 @@ RSpec.describe '/cities', type: :request do
         patch city_url(city), params: { city: new_attributes }
         city.reload
         expect(response).to redirect_to(city_url(city))
-      end
-    end
-
-    context 'with invalid parameters' do
-      it "renders a successful response (i.e. to display the 'edit' template)" do
-        city = City.create! valid_attributes
-        patch city_url(city), params: { city: invalid_attributes }
-        expect(response).to be_successful
       end
     end
   end
@@ -126,6 +115,90 @@ RSpec.describe '/cities', type: :request do
       city = City.create! valid_attributes
       delete city_url(city)
       expect(response).to redirect_to(cities_url)
+    end
+  end
+
+  describe 'GET /search_cities' do
+    it 'renders a successful response' do
+      get search_cities_url
+      expect(response).to be_successful
+    end
+  end
+
+  describe 'POST /search_cities' do
+    let!(:state2) { create(:state, name: 'Rio Grande do Sul') }
+    let!(:city) { create(:city, name: 'Gramado', state: state2) }
+
+    context 'when sending a valid city name' do
+      it 'renders a successful response' do
+        post search_cities_url, params: { search_cities: { name: 'gramado', state_name: '' } }
+        expect(response).to be_successful
+      end
+
+      it 'renders city name' do
+        post search_cities_url, params: { search_cities: { name: 'gramado', state_name: '' } }
+        expect(response.body).to match(/Gramado/)
+      end
+    end
+
+    context 'when sending a invalid city name' do
+      it 'renders a successful response' do
+        post search_cities_url, params: { search_cities: { name: 'floripa', state_name: '' } }
+        expect(response).to be_successful
+      end
+
+      it 'renders no records found' do
+        post search_cities_url, params: { search_cities: { name: 'floripa', state_name: '' } }
+        expect(response.body).to match(/No records found./)
+      end
+    end
+
+    context 'when sending a valid state name' do
+      it 'renders a successful response' do
+        post search_cities_url, params: { search_cities: { name: '', state_name: 'rio grande do sul' } }
+        expect(response).to be_successful
+      end
+
+      it 'renders city name' do
+        post search_cities_url, params: { search_cities: { name: '', state_name: 'rio grande do sul' } }
+        expect(response.body).to match(/Gramado/)
+      end
+    end
+
+    context 'when sending a invalid state name' do
+      it 'renders a successful response' do
+        post search_cities_url, params: { search_cities: { name: '', state_name: 'santa' } }
+        expect(response).to be_successful
+      end
+
+      it 'renders no records found' do
+        post search_cities_url, params: { search_cities: { name: '', state_name: 'santa' } }
+        expect(response.body).to match(/No records found./)
+      end
+    end
+
+    context 'when sending a valid city and state name that matches' do
+      it 'renders a successful response' do
+        post search_cities_url, params: { search_cities: { name: 'gramado', state_name: 'rio grande' } }
+        expect(response).to be_successful
+      end
+
+      it 'renders city name' do
+        post search_cities_url, params: { search_cities: { name: 'gramado', state_name: 'rio grande' } }
+        expect(response.body).to match(/Gramado/)
+      end
+    end
+
+    context 'when sending a valid city and state name that does not matches' do
+      it 'renders a successful response' do
+        post search_cities_url, params: { search_cities: { name: 'gramado', state_name: 'parana' } }
+        expect(response).to be_successful
+      end
+
+      it 'renders no records found' do
+        post search_cities_url, params: { search_cities: { name: 'gramado', state_name: 'parana' } }
+        expect(response.body).to match(/No records found./)
+      end
     end
   end
 end

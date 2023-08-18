@@ -4,16 +4,17 @@ require 'rails_helper'
 
 RSpec.describe 'cities/index', type: :view do
   before(:each) do
+    @state = assign(:state, State.create!(name: 'State name', population: 23))
     assign(:cities, [
              City.create!(
                name: 'Name',
                population: 2,
-               state: nil
+               state: @state
              ),
              City.create!(
                name: 'Name',
                population: 2,
-               state: nil
+               state: @state
              )
            ])
   end
@@ -22,6 +23,6 @@ RSpec.describe 'cities/index', type: :view do
     render
     assert_select 'tr>td', text: 'Name'.to_s, count: 2
     assert_select 'tr>td', text: 2.to_s, count: 2
-    assert_select 'tr>td', text: nil.to_s, count: 2
+    assert_select 'tr>td', text: @state.name.to_s, count: 2
   end
 end

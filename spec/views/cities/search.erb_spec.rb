@@ -2,14 +2,14 @@
 
 require 'rails_helper'
 
-RSpec.describe 'cities/show', type: :view do
+RSpec.describe 'cities/search', type: :view do
   before(:each) do
     @state = assign(:state, State.create!(name: 'State name', population: 23))
-    @city = assign(:city, City.create!(
-                            name: 'Name',
-                            population: 2,
-                            state: @state
-                          ))
+    @cities = [assign(:city, City.create!(
+                               name: 'Name',
+                               population: 2,
+                               state: @state
+                             ))]
   end
 
   it 'renders attributes in <p>' do

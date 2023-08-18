@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'cities/new', type: :view do
+RSpec.describe 'cities/new_search', type: :view do
   before(:each) do
     @state = assign(:state, State.create!(name: 'State name', population: 23))
     assign(:city, City.new(
@@ -12,15 +12,13 @@ RSpec.describe 'cities/new', type: :view do
                   ))
   end
 
-  it 'renders new city form' do
+  it 'renders new search city form' do
     render
 
-    assert_select 'form[action=?][method=?]', cities_path, 'post' do
-      assert_select 'input[name=?]', 'city[name]'
+    assert_select 'form[action=?][method=?]', search_cities_path, 'post' do
+      assert_select 'input[name=?]', 'search_cities[name]'
 
-      assert_select 'input[name=?]', 'city[population]'
-
-      assert_select 'select[name=?]', 'city[state_id]'
+      assert_select 'input[name=?]', 'search_cities[state_name]'
     end
   end
 end

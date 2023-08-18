@@ -35,5 +35,13 @@ RSpec.describe CitiesController, type: :routing do
     it 'routes to #destroy' do
       expect(delete: '/cities/1').to route_to('cities#destroy', id: '1')
     end
+
+    it 'routes to #new_search' do
+      expect(get: '/search_cities').to route_to('cities#new_search')
+    end
+
+    it 'routes to #search' do
+      expect(post: '/search_cities').to route_to('cities#search')
+    end
   end
 end
